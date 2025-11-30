@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 import { useState } from "react";
+import { Loader } from "lucide-react";
 
 type Stat = {
   location: string;
@@ -21,13 +22,21 @@ const Header = () => {
   const [stats, setStats] = useState<Stat[]>([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalValue, setTotalValue] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const loadStats = async () => {
-    const res = await fetch("http://localhost:3001/api/statistics");
-    const data = await res.json();
-    setStats(data.stats);
-    setTotalProducts(data.totalProducts);
-    setTotalValue(data.totalValue);
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:3001/api/statistics");
+      const data = await res.json();
+      setStats(data.stats);
+      setTotalProducts(data.totalProducts);
+      setTotalValue(data.totalValue);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,7 +66,7 @@ const Header = () => {
                 height={40}
                 className="w-[22px] h-[22px]"
               />
-              <DialogTitle>სტატისტიკა</DialogTitle>{" "}
+              <DialogTitle>სტატისტიკა</DialogTitle>
               <DialogDescription></DialogDescription>
             </div>
           </DialogTrigger>
@@ -67,31 +76,37 @@ const Header = () => {
                 სტატისტიკა
               </h1>
             </div>
-            <div className="w-full h-full flex flex-col items-center justify-start -mt-5 p-7 ">
-              <div className="w-full h-10 flex flex-row justify-between font-semibold items-center bg-gray-100 p-4 ">
-                <p>კინოთეატრი</p>
-                <p>რაოდენობა</p>
-                <p>ჯამური ფასი</p>
+            {loading ? (
+              <div className="w-full h-[20%] rounded-lg bg-white flex items-center justify-center ">
+                <Loader />
               </div>
-              {stats.map((el) => (
-                <div className="w-full p-3 h-[50px] flex flex-row justify-between items-center border-t-2 border-t-gray-300 ">
-                  <div className="flex flex-start w-[30%] ">
-                    <p>{el.location}</p>
-                  </div>
-                  <div className="flex flex-start w-[20%] ">
-                    <p>{el.count.toLocaleString()}</p>
-                  </div>
-                  <div className="flex flex-start w-[20%] ">
-                    <p>{el.totalPrice.toLocaleString()}GEL</p>
-                  </div>
+            ) : (
+              <div className="w-full h-full flex flex-col items-center justify-start -mt-5 p-7 ">
+                <div className="w-full h-10 flex flex-row justify-between font-semibold items-center bg-gray-100 p-4 ">
+                  <p>კინოთეატრი</p>
+                  <p>რაოდენობა</p>
+                  <p>ჯამური ფასი</p>
                 </div>
-              ))}
-              <div className="w-full h-10 mt-4 flex flex-row font-semibold justify-between rounded-lg items-center bg-blue-100 p-5 ">
-                <h1 className="text-2xl ">სულ:</h1>
-                <p className="ml-10">{totalProducts.toLocaleString()}</p>
-                <p>{totalValue.toLocaleString()}GEL</p>
+                {stats.map((el) => (
+                  <div className="w-full p-3 h-[50px] flex flex-row justify-between items-center border-t-2 border-t-gray-300 ">
+                    <div className="flex flex-start w-[30%] ">
+                      <p>{el.location}</p>
+                    </div>
+                    <div className="flex flex-start w-[20%] ">
+                      <p>{el.count.toLocaleString()}</p>
+                    </div>
+                    <div className="flex flex-start w-[20%] ">
+                      <p>{el.totalPrice.toLocaleString()}GEL</p>
+                    </div>
+                  </div>
+                ))}
+                <div className="w-full h-10 mt-4 flex flex-row font-semibold justify-between rounded-lg items-center bg-blue-100 p-5 ">
+                  <h1 className="text-2xl ">სულ:</h1>
+                  <p className="ml-10">{totalProducts.toLocaleString()}</p>
+                  <p>{totalValue.toLocaleString()}GEL</p>
+                </div>
               </div>
-            </div>
+            )}
           </DialogContent>
         </form>
       </Dialog>
