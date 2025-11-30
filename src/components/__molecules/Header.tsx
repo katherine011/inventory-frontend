@@ -87,7 +87,7 @@ const Header = () => {
                   <p>რაოდენობა</p>
                   <p>ჯამური ფასი</p>
                 </div>
-                {stats.map((el) => (
+                {stats?.map((el) => (
                   <div className="w-full p-3 h-[50px] flex flex-row justify-between items-center border-t-2 border-t-gray-300 ">
                     <div className="flex flex-start w-[30%] ">
                       <p>{el.location}</p>
