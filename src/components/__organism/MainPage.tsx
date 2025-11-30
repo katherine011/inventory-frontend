@@ -1,5 +1,5 @@
-import Cards from "../../components/__molecules/Cards";
-import Header from "../../components/__molecules/Header";
+import Cards from "../__molecules/Cards";
+import Header from "../__molecules/Header";
 
 const MainPage = () => {
   return (

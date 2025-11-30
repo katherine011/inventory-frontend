@@ -1,7 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
 import "./App.css";
-import MainPage from "./pages/AddItems/MainPage";
-import AddItems from "./components/__organism/AddItems";
+import MainPage from "./components/__organism/MainPage";
 
 function App() {
   return (

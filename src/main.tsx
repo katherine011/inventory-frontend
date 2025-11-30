@@ -4,7 +4,8 @@ import "./index.css";
 import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AddItems from "./components/__organism/AddItems";
-import NotFoundPage from "./pages/NotFoundPage/NotFOundPage";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import { Toaster } from "./components/ui/sonner";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -15,5 +16,6 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <RouterProvider router={router} />
+    <Toaster richColors position="bottom-left" />
   </StrictMode>
 );
